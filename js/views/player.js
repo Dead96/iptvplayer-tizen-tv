@@ -343,9 +343,14 @@ var PlayerView = {
       });
   },
 
+  /** Ferma la sessione AVPlay corrente senza toccare l'interfaccia (usato prima di mostrare un errore). */
+  _stopAvplaySilently: function () {
+    try { webapis.avplay.stop(); } catch (e) { /* ignora */ }
+    try { webapis.avplay.close(); } catch (e) { /* ignora */ }
+  },
+
   _openAvplay: function (url) {
-    try { webapis.avplay.stop(); } catch (e) { /* nessuno stream precedente */ }
-    try { webapis.avplay.close(); } catch (e) { /* nessuno stream precedente */ }
+    PlayerView._stopAvplaySilently();
 
     PlayerView._debug('Apro: ' + url);
     PlayerView._showSpinner();
@@ -369,6 +374,7 @@ var PlayerView = {
         },
         onstreamcompleted: function () {
           PlayerView._debug('Stream terminato.');
+          PlayerView._stopAvplaySilently();
           PlayerView._showError('Lo stream si e\' interrotto.');
         },
         oncurrentplaytime: function () {
@@ -376,6 +382,10 @@ var PlayerView = {
         },
         onerror: function (err) {
           PlayerView._debug('ERRORE: ' + JSON.stringify(err));
+          // Senza questo, lo stream continua a essere trasmesso (a volte per
+          // diversi secondi) anche con il dialogo di errore gia' a schermo,
+          // perche' AVPlay puo' segnalare l'errore prima di fermarsi davvero.
+          PlayerView._stopAvplaySilently();
           PlayerView._showError('Impossibile riprodurre il canale.');
         },
         onevent: function (eventType, eventData) {
