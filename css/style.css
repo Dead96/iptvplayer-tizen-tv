@@ -95,6 +95,10 @@ html, body {
   line-height: 1.4;
 }
 
+.field {
+  margin-bottom: 28px;
+}
+
 .field label {
   display: block;
   font-size: 22px;
@@ -118,6 +122,37 @@ html, body {
   background: #1e2230;
 }
 
+.settings-playlists {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 620px;
+  overflow-y: auto;
+}
+
+.settings-playlist-row {
+  text-align: left;
+  padding: 20px 24px;
+}
+
+.settings-playlist-name {
+  font-size: 26px;
+}
+
+.settings-playlist-url {
+  font-size: 18px;
+  color: #9aa1ac;
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-playlist-add {
+  color: #22d3ee;
+  font-size: 24px;
+}
+
 .error-text {
   color: #ff6b6b;
   font-size: 22px;
@@ -129,6 +164,7 @@ html, body {
   margin-top: 32px;
   display: flex;
   justify-content: flex-end;
+  gap: 20px;
 }
 
 button.focusable {
@@ -186,7 +222,7 @@ button.focusable.focused {
   position: absolute;
   top: 130px;
   right: 64px;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 4px;
   background: #12141c;
@@ -197,6 +233,10 @@ button.focusable.focused {
   max-height: 60%;
   overflow-y: auto;
   z-index: 5;
+}
+
+.side-panel.visible {
+  display: flex;
 }
 
 .side-panel-item {

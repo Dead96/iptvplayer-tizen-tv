@@ -16,18 +16,34 @@
     </div>
   </section>
 
-  <!-- Impostazioni: inserimento URL playlist -->
+  <!-- Impostazioni: elenco liste + aggiungi/modifica -->
   <section id="view-settings" class="view">
     <div class="settings-box">
       <h1>Impostazioni</h1>
-      <p class="hint">Inserisci l'URL di una playlist M3U/M3U8, oppure l'URL di un indice JSON con piu' liste (vedi README).</p>
-      <div class="field">
-        <label for="playlist-url">URL playlist o indice liste</label>
-        <input type="text" id="playlist-url" placeholder="http://192.168.1.10:8080/playlist.m3u8" />
+
+      <div id="settings-list-mode">
+        <p class="hint">Le tue liste. Selezionane una per modificarla o eliminarla.</p>
+        <div id="settings-playlists" class="settings-playlists"></div>
+        <div id="settings-error" class="error-text"></div>
       </div>
-      <div id="settings-error" class="error-text"></div>
-      <div class="button-row">
-        <button id="btn-save-settings" class="focusable" data-nav="settings">Salva e carica</button>
+
+      <div id="settings-form-mode" hidden>
+        <p class="hint">Nome e URL di una playlist M3U/M3U8. Se l'URL punta invece a un
+          indice JSON con piu' liste, il nome digitato qui viene ignorato e vengono
+          importate tutte le liste dell'indice (vedi README).</p>
+        <div class="field">
+          <label for="playlist-name">Nome</label>
+          <input type="text" id="playlist-name" placeholder="Es. Lista Sport" />
+        </div>
+        <div class="field">
+          <label for="playlist-url">URL</label>
+          <input type="text" id="playlist-url" placeholder="http://192.168.1.10:8080/playlist.m3u8" />
+        </div>
+        <div id="settings-form-error" class="error-text"></div>
+        <div class="button-row">
+          <button id="btn-delete-playlist" class="focusable" hidden>Elimina</button>
+          <button id="btn-save-playlist" class="focusable">Salva</button>
+        </div>
       </div>
     </div>
   </section>

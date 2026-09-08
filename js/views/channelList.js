@@ -23,7 +23,7 @@ var ChannelListView = {
     ChannelListView._panelEl = document.getElementById('playlists-panel');
 
     ChannelListView._settingsBtn.addEventListener('click', function () {
-      App.showSettings({ allowBack: true });
+      App.showSettings();
     });
     ChannelListView._playlistsBtn.addEventListener('click', function () {
       ChannelListView._openPanel();
@@ -107,7 +107,7 @@ var ChannelListView = {
       if (ChannelListView._focusIndex === -2) {
         ChannelListView._openPanel();
       } else if (ChannelListView._focusIndex === -1) {
-        App.showSettings({ allowBack: true });
+        App.showSettings();
       } else if (count > 0) {
         App.playChannel(ChannelListView._focusIndex);
       }
@@ -187,13 +187,13 @@ var ChannelListView = {
 
     ChannelListView._panelActive = true;
     ChannelListView._panelFocusIndex = ChannelListView._activePlaylistIndex;
-    panel.hidden = false;
+    panel.classList.add('visible');
     ChannelListView._updatePanelFocusStyles();
   },
 
   _closePanel: function () {
     ChannelListView._panelActive = false;
-    ChannelListView._panelEl.hidden = true;
+    ChannelListView._panelEl.classList.remove('visible');
   },
 
   _handlePanelKey: function (action) {

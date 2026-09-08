@@ -15,18 +15,20 @@ minimum supported platform version for broad compatibility.
   variant selection to avoid an adaptive-bitrate audio bug (see
   [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md))
 - In-player quality switcher and on-screen debug log
-- Multiple named playlists via a small JSON index file (see below) — add or
-  rename lists by editing a file on your computer, not by typing on the TV
-- Settings persisted locally (playlist URL, last-active list, last channel)
+- Multiple named playlists, managed from the TV (add/edit/delete) or
+  bulk-imported from a JSON index file (see below)
+- Settings persisted locally (playlists, last-active list, last channel)
 
 ## Quick start
 
-1. Point the app at a playlist. In **Settings**, enter either:
-   - a direct M3U/M3U8 URL, or
-   - the URL of a JSON **playlists index** (recommended — see below)
+1. On first launch, **Settings** shows just "+ Aggiungi nuova lista" (Add new
+   list). Select it, enter a **name** and the **URL** of an M3U/M3U8 playlist,
+   and save.
 2. Browse channels, press Enter to play.
 3. In the player, use the **Menu** button (Enter → Enter) to switch quality or
    toggle the debug overlay.
+4. Add more lists any time from Settings — select an existing one to edit or
+   delete it, or add another.
 
 ### Multiple playlists without typing on the TV
 
@@ -40,14 +42,20 @@ TV, host a small JSON file next to your M3U files:
 ]
 ```
 
-Enter that JSON file's URL once in Settings. The app detects it's an index
-(vs. a plain M3U) and shows a "Liste" button in the channel list to switch
-between playlists. To add, rename, or remove a list, edit the JSON file on
-your computer — the app just re-reads it, no TV typing required.
+In Settings, add a new list and paste this JSON file's URL (the name field is
+ignored in this case). The app detects it's an index rather than a plain M3U
+and imports every list in it in one go. To add, rename, or remove lists in
+bulk later, edit the JSON file on your computer and re-import it — no TV
+typing required for the lists that come from it.
 
 If you don't have anywhere to host a JSON file, any static file host on your
 LAN works (a folder shared via a lightweight HTTP server, a NAS, etc.) — it
 just needs to serve that one file over HTTP.
+
+A free tip that needs no code at all: the Samsung SmartThings mobile app's
+remote includes a phone keyboard that types directly into whatever text field
+is focused on the TV — much faster than the on-screen remote-driven keyboard
+for one-off entries.
 
 ## Project layout
 
@@ -62,7 +70,7 @@ js/
   playlistsIndex.js    JSON playlists-index parsing
   remote.js           Remote control key mapping
   views/
-    settings.js       Playlist/index URL entry
+    settings.js       Manage playlists: add/edit/delete, JSON index import
     channelList.js    Channel list + playlists switcher panel
     player.js         AVPlay / fallback <video> playback
 scripts/
