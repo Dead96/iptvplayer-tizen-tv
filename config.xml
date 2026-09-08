@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:tizen="http://tizen.org/ns/widgets"
+        id="http://example.com/IPTVPlayer"
+        version="1.0.0"
+        viewmodes="maximized">
+    <tizen:application id="APPIPTV001.IPTVPlayer" package="APPIPTV001" required_version="4.0"/>
+    <content src="index.html"/>
+    <name>IPTVPlayer</name>
+    <icon src="icon.png"/>
+
+    <!-- Permette le richieste di rete (fetch della playlist M3U) verso qualsiasi host locale -->
+    <access origin="*" subdomains="true"/>
+
+    <tizen:profile name="tv"/>
+
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+
+    <!-- Necessaria per scaricare la playlist M3U e riprodurre gli stream -->
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <!-- Necessaria per intercettare i tasti del telecomando (frecce, indietro, canale +/-) -->
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+    <!-- Necessaria per usare il player nativo AVPlay (HLS/MPEG-TS) -->
+    <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
+
+    <tizen:setting screen-orientation="landscape"
+                    context-menu="disable"
+                    background-support="disable"
+                    encryption="disable"
+                    install-location="auto"
+                    hwkey-event="enable"/>
+</widget>

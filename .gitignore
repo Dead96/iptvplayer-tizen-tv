@@ -1,0 +1,6 @@
+# Tizen build output
+.buildResult/
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080, user-scalable=no">
+<title>IPTVPlayer</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Schermata iniziale di caricamento -->
+  <section id="view-loading" class="view">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p id="loading-text">Caricamento playlist...</p>
+    </div>
+  </section>
+
+  <!-- Impostazioni: inserimento URL playlist -->
+  <section id="view-settings" class="view">
+    <div class="settings-box">
+      <h1>Impostazioni</h1>
+      <p class="hint">Inserisci l'URL di una playlist M3U/M3U8, oppure l'URL di un indice JSON con piu' liste (vedi README).</p>
+      <div class="field">
+        <label for="playlist-url">URL playlist o indice liste</label>
+        <input type="text" id="playlist-url" placeholder="http://192.168.1.10:8080/playlist.m3u8" />
+      </div>
+      <div id="settings-error" class="error-text"></div>
+      <div class="button-row">
+        <button id="btn-save-settings" class="focusable" data-nav="settings">Salva e carica</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista canali -->
+  <section id="view-channels" class="view">
+    <header class="channels-header">
+      <h1 id="channels-title">Canali</h1>
+      <div class="channels-header-actions">
+        <button id="btn-open-playlists" class="focusable settings-btn" hidden>Liste</button>
+        <button id="btn-open-settings" class="focusable settings-btn" data-nav="channels">Impostazioni</button>
+      </div>
+    </header>
+    <div id="channel-list" class="channel-list"></div>
+    <div id="channels-empty" class="empty-text" hidden>Nessun canale trovato nella playlist.</div>
+    <div id="playlists-panel" class="side-panel" hidden></div>
+  </section>
+
+  <!-- Player -->
+  <section id="view-player" class="view">
+    <div id="video-hole" class="video-hole">
+      <video id="fallback-video" playsinline></video>
+    </div>
+    <div id="player-spinner" class="player-spinner" hidden>
+      <div class="spinner"></div>
+    </div>
+    <div id="player-osd" class="player-osd">
+      <div class="player-osd-row">
+        <div class="player-osd-title" id="player-channel-name">&nbsp;</div>
+        <button id="player-menu-toggle" class="focusable player-menu-toggle">Menu</button>
+      </div>
+    </div>
+    <div id="player-menu" class="player-menu" hidden>
+      <button id="player-btn-quality" class="focusable player-menu-item">Qualit&agrave;</button>
+      <button id="player-btn-debug" class="focusable player-menu-item">Debug: OFF</button>
+    </div>
+    <div id="player-error" class="player-error" hidden>
+      <div class="player-error-text" id="player-error-text"></div>
+      <div class="player-error-actions">
+        <button id="player-error-back" class="focusable">Indietro</button>
+        <button id="player-error-retry" class="focusable">Riprova</button>
+      </div>
+    </div>
+    <div id="player-debug" class="player-debug" hidden></div>
+  </section>
+
+  <script src="js/storage.js"></script>
+  <script src="js/m3uParser.js"></script>
+  <script src="js/playlistsIndex.js"></script>
+  <script src="js/remote.js"></script>
+  <script src="js/views/settings.js"></script>
+  <script src="js/views/channelList.js"></script>
+  <script src="js/views/player.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

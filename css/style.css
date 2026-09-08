@@ -1,0 +1,410 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  /* Trasparente: il piano video nativo di AVPlay viene composto dalla piattaforma
+     SOTTO il livello HTML, quindi qualunque pixel opaco disegnato dalla pagina
+     (anche solo lo sfondo di html/body) lo coprirebbe. Le view che non sono il
+     player hanno il proprio sfondo opaco esplicito (vedi sotto). */
+  background: transparent;
+  color: #f5f7fa;
+  font-family: "Samsung Sans", "Helvetica Neue", Arial, sans-serif;
+  overflow: hidden;
+}
+
+.view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* ---------- Loading ---------- */
+
+#view-loading {
+  background: #0b0c11;
+}
+#view-loading.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-box {
+  text-align: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  border: 6px solid #23262f;
+  border-top-color: #22d3ee;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#loading-text {
+  font-size: 28px;
+  color: #9aa1ac;
+}
+
+/* ---------- Settings ---------- */
+
+#view-settings {
+  background: #0b0c11;
+}
+#view-settings.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-box {
+  width: 1100px;
+  padding: 64px;
+  background: #12141c;
+  border-radius: 24px;
+}
+
+.settings-box h1 {
+  font-size: 44px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.settings-box .hint {
+  font-size: 24px;
+  color: #9aa1ac;
+  margin-bottom: 40px;
+  line-height: 1.4;
+}
+
+.field label {
+  display: block;
+  font-size: 22px;
+  color: #9aa1ac;
+  margin-bottom: 12px;
+}
+
+.field input {
+  width: 100%;
+  font-size: 30px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 3px solid #2a2e3a;
+  background: #1a1d27;
+  color: #f5f7fa;
+  outline: none;
+}
+
+.field input.focused {
+  border-color: #22d3ee;
+  background: #1e2230;
+}
+
+.error-text {
+  color: #ff6b6b;
+  font-size: 22px;
+  margin-top: 20px;
+  min-height: 28px;
+}
+
+.button-row {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button.focusable {
+  font-size: 28px;
+  padding: 18px 40px;
+  border-radius: 14px;
+  border: 3px solid transparent;
+  background: #22303c;
+  color: #f5f7fa;
+  cursor: pointer;
+}
+
+button.focusable.focused {
+  background: #22d3ee;
+  color: #0b0c11;
+  border-color: #7fe9f7;
+  transform: scale(1.04);
+}
+
+/* ---------- Channel list ---------- */
+
+#view-channels {
+  background: #0b0c11;
+}
+
+.channels-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 48px 64px 24px;
+}
+
+.channels-header h1 {
+  font-size: 40px;
+  font-weight: 600;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.channels-header-actions {
+  display: flex;
+  gap: 16px;
+  flex: 0 0 auto;
+}
+
+.settings-btn {
+  font-size: 24px;
+  background: #1a1d27;
+}
+
+.side-panel {
+  position: absolute;
+  top: 130px;
+  right: 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #12141c;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  min-width: 360px;
+  max-height: 60%;
+  overflow-y: auto;
+  z-index: 5;
+}
+
+.side-panel-item {
+  text-align: left;
+  font-size: 22px;
+  padding: 16px 20px;
+  background: transparent;
+  border-radius: 10px;
+}
+
+.side-panel-item-active:not(.focused) {
+  color: #22d3ee;
+}
+
+.channel-list {
+  height: 880px;
+  padding: 8px 64px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.channel-row {
+  background: #12141c;
+  border: 3px solid transparent;
+  border-radius: 14px;
+  padding: 14px 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  height: 76px;
+  flex: 0 0 auto;
+}
+
+.channel-row.focused {
+  border-color: #22d3ee;
+  background: #1a2430;
+  transform: scale(1.02);
+}
+
+.channel-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #1a1d27;
+  flex: 0 0 auto;
+}
+
+.channel-name {
+  font-size: 26px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-text {
+  text-align: center;
+  font-size: 26px;
+  color: #9aa1ac;
+  margin-top: 120px;
+}
+
+/* ---------- Player ---------- */
+
+#view-player {
+  background: transparent;
+}
+
+.video-hole {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent; /* lascia passare il piano video nativo AVPlay */
+}
+
+#fallback-video {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.player-osd {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px 64px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.player-osd.visible {
+  opacity: 1;
+}
+
+.player-osd-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.player-osd-title {
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.player-menu-toggle {
+  flex: 0 0 auto;
+  font-size: 22px;
+  background: rgba(255,255,255,0.08);
+}
+
+.player-menu {
+  position: absolute;
+  right: 64px;
+  bottom: 150px;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: #12141c;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  min-width: 340px;
+}
+
+.player-menu.visible {
+  display: flex;
+}
+
+.player-menu-item {
+  text-align: left;
+  font-size: 22px;
+  padding: 16px 20px;
+  background: transparent;
+  border-radius: 10px;
+}
+
+.player-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.4);
+}
+
+.player-spinner.visible {
+  display: flex;
+}
+
+.player-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 760px;
+  max-width: 80%;
+  text-align: center;
+  background: #12141c;
+  border-radius: 20px;
+  padding: 48px 56px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.player-error-text {
+  font-size: 28px;
+  line-height: 1.5;
+  color: #f5f7fa;
+  margin-bottom: 36px;
+}
+
+.player-error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.player-debug {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  max-width: 900px;
+  max-height: 260px;
+  overflow-y: auto;
+  font-size: 16px;
+  line-height: 1.4;
+  font-family: monospace;
+  color: #7fe9a0;
+  background: rgba(0,0,0,0.55);
+  padding: 10px 14px;
+  border-radius: 8px;
+  white-space: pre-line;
+  display: none;
+}
+
+.player-debug.visible {
+  display: block;
+}
