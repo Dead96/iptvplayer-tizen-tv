@@ -113,7 +113,7 @@ var SettingsView = {
     for (var i = 0; i < rows.length; i++) {
       var isFocused = i === SettingsView._listFocusIndex;
       rows[i].classList.toggle('focused', isFocused);
-      if (isFocused) rows[i].scrollIntoView({ block: 'nearest' });
+      if (isFocused) DomUtil.scrollIntoViewNearest(SettingsView._playlistsContainer, rows[i]);
     }
   },
 
@@ -241,21 +241,24 @@ var SettingsView = {
 
   _handleFormKey: function (action) {
     var order = SettingsView._formFocusOrder;
+    var current = order[SettingsView._formFocusIndex];
+    // Elimina/Salva sono affiancati orizzontalmente: quando il focus e' su uno
+    // dei due, destra/sinistra si muovono tra loro come su/giu'. Sui campi di
+    // testo (nome/URL) invece sinistra/destra restano liberi per il cursore.
+    var onButton = current === 'delete' || current === 'save';
 
     if (action === 'back') {
       SettingsView._closeForm();
       return true;
     }
-    // Solo su/giu' spostano il focus tra i campi: sinistra/destra restano
-    // liberi per muovere il cursore mentre si modifica il testo.
-    if (action === 'down') {
+    if (action === 'down' || (onButton && action === 'right')) {
       if (SettingsView._formFocusIndex < order.length - 1) {
         SettingsView._formFocusIndex += 1;
         SettingsView._applyFormFocus();
       }
       return true;
     }
-    if (action === 'up') {
+    if (action === 'up' || (onButton && action === 'left')) {
       if (SettingsView._formFocusIndex > 0) {
         SettingsView._formFocusIndex -= 1;
         SettingsView._applyFormFocus();
@@ -263,7 +266,6 @@ var SettingsView = {
       return true;
     }
     if (action === 'enter') {
-      var current = order[SettingsView._formFocusIndex];
       if (current === 'save') {
         SettingsView._save();
         return true;

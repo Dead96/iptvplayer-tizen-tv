@@ -120,7 +120,9 @@ var ChannelListView = {
 
     switch (action) {
       case 'up':
-        if (ChannelListView._focusIndex === 0) {
+        if (ChannelListView._focusIndex > 0) {
+          ChannelListView._focusIndex -= 1;
+        } else if (ChannelListView._focusIndex === 0) {
           ChannelListView._focusIndex = -1;
         } else if (ChannelListView._focusIndex === -1 && topSlots === 2) {
           ChannelListView._focusIndex = -2;
@@ -160,7 +162,7 @@ var ChannelListView = {
       var isFocused = i === ChannelListView._focusIndex;
       rows[i].classList.toggle('focused', isFocused);
       if (isFocused) {
-        rows[i].scrollIntoView({ block: 'nearest' });
+        DomUtil.scrollIntoViewNearest(ChannelListView._list, rows[i]);
       }
     }
   },
